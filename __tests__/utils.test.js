@@ -1,5 +1,9 @@
 const {
-  convertTimestampToDate
+  convertTimestampToDate,
+  formatTopics,
+  formatUsers,
+  formatArticles,
+  formatComments,
 } = require("../db/seeds/utils");
 
 describe("convertTimestampToDate", () => {
@@ -37,4 +41,105 @@ describe("convertTimestampToDate", () => {
     expect(result).toEqual(expected);
   });
 });
+
+describe('formatTopics', () => {
+  test('When passed an empty array, should return an empty array', () => {
+    // Arrange
+    const input = [];
+    const expected = [];
+    // Act
+    const result = formatTopics(input);
+    // Assert
+    expect(result).toEqual(expected);
+  });
+
+  test('When passed an array with one object, should return an array of arrays with the elements of the inner array being the fields of the object', () => {
+    // Arrange
+    const input = [{
+      description: "types are love, types are life",
+      slug: "Why typescript is better than javascript",
+      img_url: "",
+    }];
+    const expected = [["Why typescript is better than javascript","types are love, types are life", ""]];
+    // Act
+    const result = formatTopics(input);
+    // Assert
+    expect(result);
+  });
+
+  test("does not mutate the input", () => {
+    const input = [
+      {
+        description: "Functional programming",
+        slug: "fp",
+        img_url: "image.png",
+      },
+    ];
+
+    const copyOfInput = [
+      {
+        description: "Functional programming",
+        slug: "fp",
+        img_url: "image.png",
+      },
+    ];
+
+    formatTopics(input);
+    expect(input).toEqual(copyOfInput);
+  });
+});
+
+describe("formatUsers", () => {
+  test("returns an empty array when passed an empty array", () => {
+    const input = [];
+    const expected = [];
+    const result = formatUsers(input);
+    expect(result).toEqual(expected);
+  });
+
+  test("returns an array of arrays when passed an array with one object", () => {
+    const input = [
+      {
+        username: "johndoe",
+        name: "John Doe",
+        avatar_url: "https://example.com/avatar.jpg",
+      },
+    ];
+    const expected = [["johndoe", "John Doe", "https://example.com/avatar.jpg"]];
+    const result = formatUsers(input);
+    expect(result).toEqual(expected);
+  });
+
+  test("does not mutate the input", () => {
+    const input = [
+      {
+        username: "janedoe",
+        name: "Jane Doe",
+        avatar_url: "https://example.com/avatar2.jpg",
+      },
+    ];
+    const copyOfInput = [
+      {
+        username: "janedoe",
+        name: "Jane Doe",
+        avatar_url: "https://example.com/avatar2.jpg",
+      },
+    ]; 
+    formatUsers(input);
+    expect(input).toEqual(copyOfInput);
+  });
+});
+
+describe("formatArticles", () => {
+  test("returns an empty array when passed an empty array", () => {
+    const input = [];
+    const expected = [];
+    const result = formatArticles(input);
+    expect(result).toEqual(expected);
+  });
+
+  test.todo("returns a nested array when passed an array with one object and converts timestamp");
+});
+
+
 

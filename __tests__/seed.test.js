@@ -317,7 +317,7 @@ describe('seed', () => {
           );
         });
     });
-    test('comments table has article_id column as the primary key', () => {
+    test('comments table has comment_id column as the primary key', () => {
       return db
         .query(
           `SELECT column_name
