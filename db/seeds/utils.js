@@ -21,12 +21,18 @@ const formatUsers = (data) => {
   });
 };
 
-const formatArticles = (data) => {
-  //console.log(data, '<<< articles data');
-  return data.map((row) => {
-    const newRow = convertTimestampToDate(row);
-    return [newRow.title, newRow.topic, newRow.author, newRow.body, newRow.created_at, newRow.votes, newRow.article_img_url];
-  })
+const formatArticles = (articles) => {
+  return articles.map((article) => {
+    return [
+      article.title,
+      article.topic,
+      article.author,
+      article.body,
+      new Date(article.created_at),
+      article.votes ?? 0,  // If votes is undefined, default to 0
+      article.article_img_url
+    ];
+  });
 };
 
 const formatComments = (data, dataMap) => {
