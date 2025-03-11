@@ -137,8 +137,6 @@ describe("formatArticles", () => {
     const result = formatArticles(input);
     expect(result).toEqual(expected);
   });
-
-  test.todo("returns a nested array when passed an array with one object and converts timestamp");
 });
 
 
