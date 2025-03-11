@@ -25,4 +25,32 @@ describe("GET /api", () => {
         expect(endpoints).toEqual(endpointsJson);
       });
   });
+
+  test("404: Responds with Not Found on a non-existent endpoint", () => {
+    return request(app)
+      .get("/app/not-an-endpoint")
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("Not Found");
+        expect(body.status).toEqual(404);
+      });
+  });
 });
+
+describe("GET /api/topics", () => {
+  test("200: Should return an array of topics objects with a slug and a description", () => {
+    return request(app)
+      .get("/api/topics")
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.topics).toHaveLength(3);
+        body.topics.forEach((topic) => {
+          expect(typeof topic.slug).toBe("string")
+          expect(typeof topic.description).toBe("string")
+        });
+      });
+  });
+});
+
+
+

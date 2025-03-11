@@ -1,4 +1,6 @@
-const endpoints = require("../endpoints.json")
+const endpoints = require("../endpoints.json");
+
+const { fetchTopics } = require("../models/topics.models.js");
 
 function getEndpoints(request, response) {
   response
@@ -6,4 +8,13 @@ function getEndpoints(request, response) {
     .send({ endpoints: endpoints })
 }
 
-module.exports = { getEndpoints };
+function getTopics(request, response) {
+  fetchTopics()
+    .then((topics) => {
+      response
+        .status(200)
+        .send({ topics: topics });
+    });
+}
+
+module.exports = { getEndpoints, getTopics };
