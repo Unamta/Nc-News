@@ -446,5 +446,16 @@ describe('seed', () => {
         });
       });
     });
+    test('comments table has article_id', () => {
+      return db
+        .query(`SELECT comment_id, article_id FROM comments;`)
+        .then(({ rows: comments }) => {
+          console.log(comments);
+          comments.forEach((comment) => {
+            expect(typeof comment.article_id).toBe('number');
+            expect(comment.article_id).not.toBe(0);
+          });
+        })
+    })
   });
 });
