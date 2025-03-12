@@ -2,23 +2,25 @@ const express = require("express");
 const endpoints = require("./endpoints.json");
 
 const { getEndpoints, getTopics } = require("./controllers/api.controllers.js");
-const { handleNonExistentEndpoint } = require("./controllers/errors.controllers.js");
+const { getArticleById } = require("./controllers/articles.controllers.js");
+const { 
+  handleNonExistentEndpoint,
+  handlePSQLErrors,
+  handleCustomErrors,
+  handleServerErrors,
+} = require("./controllers/errors.controllers.js");
 
 const app = express();
 
 app.get("/api", getEndpoints);
 app.get("/api/topics", getTopics);
+app.get("/api/articles/:article_id", getArticleById);
+
+app.use(handlePSQLErrors);
+app.use(handleCustomErrors);
+app.use(handleServerErrors);
 
 app.all("/*", handleNonExistentEndpoint);
-
-app.use((err, request, response, next) => {
-  response
-    .status(500)
-    .send({
-      status: 500,
-      msg: "Internal server error",
-    });
-});
 
 module.exports = app;
 
