@@ -91,7 +91,7 @@ const insertComments = (data) => {
     .then((results) => {
       const articleTitleIdMap = {};
       results.rows.map((row) => {
-        articleTitleIdMap[row.article_title] = row.article_id;
+        articleTitleIdMap[row.title] = row.article_id;
       })
       const newData = formatComments(data, articleTitleIdMap);
       const sqlString = `INSERT INTO comments (article_id, body, votes, author, created_at) VALUES %L RETURNING *;`;
