@@ -52,6 +52,45 @@ describe("GET /api/topics", () => {
   });
 });
 
+describe("GET /api/articles", () => {
+  test("200: Responds with an array of article objects", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then(({ body }) => {
+        const articles = body.articles;
+        expect(articles).toHaveLength(13);
+      });
+  });
+  test("200: The returned array of articles are sorted by date in descending order", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then(({ body }) => {
+        const articles = body.articles;
+        const copyOfArticles = articles.slice();
+        copyOfArticles.sort((a, b) => {
+          if (a > b) {
+            return -1;
+          }
+          return 1;
+        });
+        expect(articles).toEqual(copyOfArticles);
+      })
+  });
+  test("200: None of the articles should have a body property", () => {
+    return request(app)
+      .get("/api/articles")
+      .expect(200)
+      .then(({ body }) => {
+        const articles = body.articles;
+        articles.forEach((article) => {
+          expect(article).not.toHaveProperty('body');
+        })
+      })
+  });
+});
+
 describe("GET /api/articles/:article_id", () => {
   test("200: Responds with an article corresponding to the passed in id", () => {
     return request(app)
@@ -69,6 +108,7 @@ describe("GET /api/articles/:article_id", () => {
         expect(typeof article_img_url).toEqual('string');
       });
   });
+
   test("404: Responds with a 404 when passed an id not in the database", () => {
     return request(app)
       .get("/api/articles/8888")
@@ -77,6 +117,7 @@ describe("GET /api/articles/:article_id", () => {
         expect(body.msg).toEqual("Not Found");
       });
   });
+
   test("400: Responds with a 400 when passed a invalid id", () => {
     return request(app)
       .get("/api/articles/not-an-id")
