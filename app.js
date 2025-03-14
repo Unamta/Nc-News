@@ -12,6 +12,7 @@ const {
   postCommentByArticleId,
   deleteCommentById,
 } = require("./controllers/comments.controllers.js");
+const { getUsers } = require("./controllers/users.controllers.js");
 const {
   handleNonExistentEndpoint,
   handlePSQLErrors,
@@ -28,6 +29,7 @@ app.get("/api/topics", getTopics);
 app.get("/api/articles", getArticles);
 app.get("/api/articles/:article_id", getArticleById);
 app.get("/api/articles/:article_id/comments", getCommentsByArticleId);
+app.get("/api/users", getUsers);
 
 app.post("/api/articles/:article_id/comments", postCommentByArticleId);
 
