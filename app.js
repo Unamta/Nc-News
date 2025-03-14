@@ -7,10 +7,10 @@ const {
   getArticles,
 } = require("./controllers/articles.controllers.js");
 const {
+  getCommentsByArticleId,
   postCommentByArticleId,
 } = require("./controllers/comments.controllers.js");
 const {
-
   handleNonExistentEndpoint,
   handlePSQLErrors,
   handleCustomErrors,
