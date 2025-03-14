@@ -77,5 +77,59 @@
         "created_at": "2020-08-06 12:04:00"
       }
     ]
+  },
+  "POST /api/articles/:article_id/comments": {
+    "description": "adds a comment to an article, serves the posted comment",
+    "queries": [],
+    "exampleResponse": {
+        "comment_id": 19,
+        "article_id": 3,
+        "body": "Voluptatem ipsam doloremque voluptate debitis voluptas nam non delectus rem. Et dicta assumenda dignissimos sed ea. Odit perspiciatis dicta consequatur aut facere in. Accusamus qui laudantium tenetur reprehenderit sed et velit iusto. Illo nihil voluptas rerum.",
+        "votes": 11,
+        "author": "grumpy19",
+        "created_at": "2020-08-06 12:04:00"
+    }
+  },
+  "PATCH /api/articles/:article_id": {
+    "description": "updates an article",
+    "queries": [],
+    "exampleResponse": {
+      "article_id": 3,
+      "title": "22 Amazing open source React projects",
+      "topic": "coding",
+      "author": "happyamy2016",
+      "body": "This is a collection of open source apps built with React.JS library. In this observation, we compared nearly 800 projects to pick the top 22. (React Native: 11, React: 11). To evaluate the quality, Mybridge AI considered a variety of factors to determine how useful the projects are for programmers. To give you an idea on the quality, the average number of Github stars from the 22 projects was 1,681.",
+      "created_at": "2020-02-29 11:12:00",
+      "votes": 99,
+      "article_img_url": "https://images.pexels.com/photos/11035471/pexels-photo-11035471.jpeg?w=700&h=700"
+    }
+  },
+  "DELETE /api/comments/:comment_id": {
+    "description": "deletes a comment",
+    "queries": [],
+    "exampleResponse": {}
+  },
+  "GET /api/users": {
+    "description": "serves an array of all users",
+    "queries": [],
+    "exampleResponse": [
+      {
+        "username":   "butter_bridge",
+        "name":       "jonny",
+        "avatar_url": "https://www.healthytherapies.com/wp-content/uploads/2016/06/Lime3.jpg"
+      },{
+        "username":   "icellusedkars",
+        "name":       "sam",
+        "avatar_url": "https://avatars2.githubusercontent.com/u/24604688?s=460&v=4"
+      },{
+        "username":   "rogersop",
+        "name":       "paul",
+        "avatar_url": "https://avatars2.githubusercontent.com/u/24394918?s=400&v=4"
+      },{
+        "username":   "lurker",
+        "name":       "do_nothing",
+        "avatar_url": "https://www.golenbock.com/wp-content/uploads/2015/01/placeholder-user.png"
+      }
+    ]
   }
 }
