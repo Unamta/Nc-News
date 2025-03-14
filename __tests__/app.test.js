@@ -3,18 +3,18 @@ const endpointsJson = require("../endpoints.json");
 const request = require("supertest");
 const app = require("../app");
 const endpoints = require("../endpoints.json");
-const db = require("../db/connection.js")
-const seed = require("../db/seeds/seed.js")
-const data = require("../db/data/test-data/index.js")
+const db = require("../db/connection.js");
+const seed = require("../db/seeds/seed.js");
+const data = require("../db/data/test-data/index.js");
 
 /* Set up your beforeEach & afterAll functions here */
 beforeEach(() => {
-  return seed(data)
-})
+  return seed(data);
+});
 
 afterAll(() => {
-  return db.end()
-})
+  return db.end();
+});
 
 describe("GET /api", () => {
   test("200: Responds with an object detailing the documentation for each endpoint", () => {
@@ -45,8 +45,8 @@ describe("GET /api/topics", () => {
       .then(({ body }) => {
         expect(body.topics).toHaveLength(3);
         body.topics.forEach((topic) => {
-          expect(typeof topic.slug).toBe("string")
-          expect(typeof topic.description).toBe("string")
+          expect(typeof topic.slug).toBe("string");
+          expect(typeof topic.description).toBe("string");
         });
       });
   });
@@ -76,7 +76,7 @@ describe("GET /api/articles", () => {
           return 1;
         });
         expect(articles).toEqual(copyOfArticles);
-      })
+      });
   });
   test("200: None of the articles should have a body property", () => {
     return request(app)
@@ -85,9 +85,9 @@ describe("GET /api/articles", () => {
       .then(({ body }) => {
         const articles = body.articles;
         articles.forEach((article) => {
-          expect(article).not.toHaveProperty('body');
-        })
-      })
+          expect(article).not.toHaveProperty("body");
+        });
+      });
   });
 });
 
@@ -97,15 +97,23 @@ describe("GET /api/articles/:article_id", () => {
       .get("/api/articles/3")
       .expect(200)
       .then(({ body }) => {
-        const { author, title, article_id, topic, created_at, votes, article_img_url } = body.article;
-        expect(typeof author).toEqual('string');
-        expect(typeof title).toEqual('string');
-        expect(typeof article_id).toEqual('number');
-        expect(typeof body.article.body).toEqual('string');
-        expect(typeof topic).toEqual('string');
-        expect(typeof created_at).toEqual('string');
-        expect(typeof votes).toEqual('number');
-        expect(typeof article_img_url).toEqual('string');
+        const {
+          author,
+          title,
+          article_id,
+          topic,
+          created_at,
+          votes,
+          article_img_url,
+        } = body.article;
+        expect(typeof author).toEqual("string");
+        expect(typeof title).toEqual("string");
+        expect(typeof article_id).toEqual("number");
+        expect(typeof body.article.body).toEqual("string");
+        expect(typeof topic).toEqual("string");
+        expect(typeof created_at).toEqual("string");
+        expect(typeof votes).toEqual("number");
+        expect(typeof article_img_url).toEqual("string");
       });
   });
 
@@ -128,6 +136,28 @@ describe("GET /api/articles/:article_id", () => {
   });
 });
 
+describe("POST /api/articles/:article_id/comments", () => {
+  test("201: Responds with a 201 and the posted comment", () => {
+    return request(app)
+      .post("/api/articles/3/comments")
+      .send({
+        username: "icellusedkars",
+        body: "this is my comment",
+      })
+      .expect(201)
+      .then(({ body }) => {
+        const comment = body.comment;
+        const { article_id, comment_id, votes, created_at, author } = comment;
+        const commentBody = comment.body;
+        expect(article_id).toEqual(3);
+        expect(comment_id).toEqual(19);
+        expect(votes).toEqual(0);
+        expect(author).toEqual("icellusedkars");
+        expect(commentBody).toEqual("this is my comment");
+        expect(typeof created_at).toEqual("string");
+      });
+  });
+});
 describe("GET /api/articles/:article_id/comments", () => {
   test("200: Responds will all comments for an article", () => {
     return request(app)
