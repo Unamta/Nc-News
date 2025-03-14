@@ -38,11 +38,8 @@ function getCommentsByArticleId(request, response, next) {
 }
 
 function patchArticleById(request, response, next) {
-  console.log("<<< in patch controller");
   const myId = request.params.article_id;
   const amount = request.body.inc_votes;
-  console.log(myId, amount);
-  console.log(typeof updateArticleVotesById);
   updateArticleVotesById(myId, amount)
     .then((article) => {
       response.status(200).send({

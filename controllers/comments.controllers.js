@@ -1,6 +1,7 @@
 const {
   fetchCommentsByArticleId,
   insertCommentByArticleId,
+  deleteFromComments,
 } = require("../models/comments.models.js");
 
 function getCommentsByArticleId(request, response, next) {
@@ -15,14 +16,11 @@ function getCommentsByArticleId(request, response, next) {
 }
 
 function postCommentByArticleId(request, response, next) {
-  console.log("In controller");
   const myId = request.params.article_id;
   const username = request.body.username;
   const body = request.body.body;
-  console.log(myId, username, body);
   return insertCommentByArticleId(myId, username, body)
     .then((comment) => {
-      console.log("inserted properly");
       response.status(201).send({ comment: comment });
     })
     .catch((error) => {
@@ -30,4 +28,19 @@ function postCommentByArticleId(request, response, next) {
     });
 }
 
-module.exports = { getCommentsByArticleId, postCommentByArticleId };
+function deleteCommentById(request, response, next) {
+  const myId = request.params.comment_id;
+  return deleteFromComments(myId)
+    .then(() => {
+      response.status(204).send({});
+    })
+    .catch((error) => {
+      next(error);
+    });
+}
+
+module.exports = {
+  getCommentsByArticleId,
+  postCommentByArticleId,
+  deleteCommentById,
+};
