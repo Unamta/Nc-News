@@ -158,6 +158,7 @@ describe("POST /api/articles/:article_id/comments", () => {
       });
   });
 });
+
 describe("GET /api/articles/:article_id/comments", () => {
   test("200: Responds will all comments for an article", () => {
     return request(app)
@@ -179,24 +180,24 @@ describe("GET /api/articles/:article_id/comments", () => {
           comment_id: 10,
           votes: 0,
           created_at: "2020-06-20T07:24:00.000Z",
-          author: 'icellusedkars',
-          body: 'git push origin master',
+          author: "icellusedkars",
+          body: "git push origin master",
           article_id: 3,
         });
-      })
+      });
   });
 
-  test("200: The array of comments should be ordered with the most recent comments first",  () => {
+  test("200: The array of comments should be ordered with the most recent comments first", () => {
     return request(app)
       .get("/api/articles/3/comments")
       .expect(200)
       .then(({ body }) => {
         const comments = body.comments;
-        expect(comments).toBeSorted({ 
-          key: 'created_at',
+        expect(comments).toBeSorted({
+          key: "created_at",
           descending: true,
         });
-      })
+      });
   });
 
   test("404: Responds with a 404 when the passed in id doesn't exist in the database", () => {
@@ -214,7 +215,42 @@ describe("GET /api/articles/:article_id/comments", () => {
       .expect(400)
       .then(({ body }) => {
         expect(body.msg).toEqual("Bad Request");
-      })
+      });
   });
 });
 
+describe("PATCH /api/articles/:article_id", () => {
+  test("200: Responds with the updated article when the patch is successful", () => {
+    return request(app)
+      .patch("/api/articles/3")
+      .send({
+        inc_votes: 5,
+      })
+      .expect(200)
+      .then(({ body }) => {
+        expect(body.article.votes).toEqual(5);
+      });
+  });
+  test("404: Responds with Not Found when the article_id doesn't exist in the database", () => {
+    return request(app)
+      .patch("/api/articles/8888")
+      .send({
+        inc_votes: 1,
+      })
+      .expect(404)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("Not Found");
+      });
+  });
+  test("400: Responds with Bad Request when the body doesn't have an inc_votes property", () => {
+    return request(app)
+      .patch("/api/articles/3")
+      .send({
+        wrong_property: 3,
+      })
+      .expect(400)
+      .then(({ body }) => {
+        expect(body.msg).toEqual("Bad Request");
+      });
+  });
+});
