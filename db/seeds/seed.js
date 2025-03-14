@@ -1,12 +1,12 @@
 const db = require("../connection");
-const format = require('pg-format');
-const { 
+const format = require("pg-format");
+const {
   convertTimestampToDate,
   formatTopics,
   formatUsers,
   formatArticles,
   formatComments,
-} = require('./utils.js');
+} = require("./utils.js");
 
 const dropAllTables = () => {
   return db.query(`
@@ -67,7 +67,7 @@ const createComments = () => {
 
 const insertTopics = (data) => {
   const newData = formatTopics(data);
-  const sqlString = `INSERT INTO topics (slug, description, img_url) VALUES %L RETURNING *;`
+  const sqlString = `INSERT INTO topics (slug, description, img_url) VALUES %L RETURNING *;`;
   const formattedString = format(sqlString, newData);
   return db.query(formattedString);
 };
@@ -81,23 +81,22 @@ const insertUsers = (data) => {
 
 const insertArticles = (data) => {
   const newData = formatArticles(data);
-  const sqlString = `INSERT INTO articles (title, topic, author, body, created_at, votes, article_img_url) VALUES %L RETURNING *;`
+  const sqlString = `INSERT INTO articles (title, topic, author, body, created_at, votes, article_img_url) VALUES %L RETURNING *;`;
   const formattedString = format(sqlString, newData);
   return db.query(formattedString);
 };
 
 const insertComments = (data) => {
-  return db.query(`SELECT * FROM articles;`)
-    .then((results) => {
-      const articleTitleIdMap = {};
-      results.rows.map((row) => {
-        articleTitleIdMap[row.article_title] = row.article_id;
-      })
-      const newData = formatComments(data, articleTitleIdMap);
-      const sqlString = `INSERT INTO comments (article_id, body, votes, author, created_at) VALUES %L RETURNING *;`;
-      const formattedString = format(sqlString, newData);
-      return db.query(formattedString);
+  return db.query(`SELECT * FROM articles;`).then((results) => {
+    const articleTitleIdMap = {};
+    results.rows.map((row) => {
+      articleTitleIdMap[row.title] = row.article_id;
     });
+    const newData = formatComments(data, articleTitleIdMap);
+    const sqlString = `INSERT INTO comments (article_id, body, votes, author, created_at) VALUES %L RETURNING *;`;
+    const formattedString = format(sqlString, newData);
+    return db.query(formattedString);
+  });
 };
 
 const seed = ({ topicData, userData, articleData, commentData }) => {
@@ -112,7 +111,7 @@ const seed = ({ topicData, userData, articleData, commentData }) => {
       return createArticles();
     })
     .then(() => {
-      return createComments(); 
+      return createComments();
     })
     .then(() => {
       return insertTopics(topicData);

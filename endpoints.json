@@ -25,5 +25,57 @@
         }
       ]
     }
+  },
+  "GET /api/articles/:article_id": {
+    "description": "serves a json representation of an article with the specified article id",
+    "queries": [],
+    "exampleResponse": {
+      "article_id": 3,
+      "title": "22 Amazing open source React projects",
+      "topic": "coding",
+      "author": "happyamy2016",
+      "body": "This is a collection of open source apps built with React.JS library. In this observation, we compared nearly 800 projects to pick the top 22. (React Native: 11, React: 11). To evaluate the quality, Mybridge AI considered a variety of factors to determine how useful the projects are for programmers. To give you an idea on the quality, the average number of Github stars from the 22 projects was 1,681.",
+      "created_at": "2020-02-29 11:12:00",
+      "votes": 0,
+      "article_img_url": "https://images.pexels.com/photos/11035471/pexels-photo-11035471.jpeg?w=700&h=700"
+    }
+  },
+  "GET /api/articles/:article_id/comments": {
+    "description": "serves an array of all the comments for an article",
+    "queries": [],
+    "exampleResponse": [
+      {
+        "comment_id": 3,
+        "article_id": 3,
+        "body": "Qui sunt sit voluptas repellendus sed. Voluptatem et repellat fugiat. Rerum doloribus eveniet quidem vero aut sint officiis. Dolor facere et et architecto vero qui et perferendis dolorem. Magni quis ratione adipisci error assumenda ut. Id rerum eos facere sit nihil ipsam officia aspernatur odio.",
+        "votes": 3,
+        "author": "grumpy19",
+        "created_at": "2020-09-23 00:18:00"
+      },
+      {
+        "comment_id": 28,
+        "article_id": 3,
+        "body": "Dolorem excepturi quaerat. Earum dolor sapiente aut.",
+        "votes": 2,
+        "author": "grumpy19",
+        "created_at": "2020-03-04 13:05:00"
+      },
+      {
+        "comment_id": 51,
+        "article_id": 3,
+        "body": "Eius dolor ipsa eaque qui sed accusantium est tenetur omnis. Eligendi necessitatibus sunt voluptate occaecati et quis consequuntur aut. Maxime nihil ut quia culpa.",
+        "votes": -3,
+        "author": "grumpy19",
+        "created_at": "2020-01-14 03:12:00"
+      },
+      {
+        "comment_id": 112,
+        "article_id": 3,
+        "body": "Voluptatem ipsam doloremque voluptate debitis voluptas nam non delectus rem. Et dicta assumenda dignissimos sed ea. Odit perspiciatis dicta consequatur aut facere in. Accusamus qui laudantium tenetur reprehenderit sed et velit iusto. Illo nihil voluptas rerum.",
+        "votes": 11,
+        "author": "grumpy19",
+        "created_at": "2020-08-06 12:04:00"
+      }
+    ]
   }
 }
