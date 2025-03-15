@@ -1,6 +1,6 @@
 const db = require("../db/connection.js");
 
-function fetchArticles(sortColumn, sortOrder) {
+function fetchArticles(sortColumn, sortOrder, filterTopic) {
   const sortGreenlist = [
     "article_id",
     "title",
@@ -10,18 +10,28 @@ function fetchArticles(sortColumn, sortOrder) {
     "votes",
   ];
   const orderGreenlist = ["asc", "desc"];
+
   if (!sortGreenlist.includes(sortColumn)) {
     return Promise.reject({
       status: 400,
       msg: "Bad Request",
     });
   }
+
   if (!orderGreenlist.includes(sortOrder)) {
     return Promise.reject({
       status: 400,
       msg: "Bad Request",
     });
   }
+
+  if (filterTopic !== undefined) {
+    const queryString = `SELECT article_id, title, topic, author, created_at, votes, article_img_url FROM articles WHERE topic = $1 ORDER BY ${sortColumn} ${sortOrder};`;
+    return db.query(queryString, [filterTopic]).then(({ rows }) => {
+      return rows;
+    });
+  }
+
   const queryString = `SELECT article_id, title, topic, author, created_at, votes, article_img_url FROM articles ORDER BY ${sortColumn} ${sortOrder};`;
   return db.query(queryString).then(({ rows }) => {
     return rows;
