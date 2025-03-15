@@ -40,16 +40,22 @@ function fetchArticles(sortColumn, sortOrder, filterTopic) {
 
 function fetchArticleById(article_id) {
   return db
-    .query("SELECT * FROM articles WHERE article_id = $1;", [article_id])
+    .query("SELECT * FROM comments WHERE article_id = $1;", [article_id])
     .then(({ rows }) => {
-      const myArticle = rows[0];
-      if (!myArticle) {
-        return Promise.reject({
-          status: 404,
-          msg: "Not Found",
+      const commentCount = rows.length;
+      return db
+        .query("SELECT * FROM articles WHERE article_id = $1;", [article_id])
+        .then(({ rows }) => {
+          const myArticle = rows[0];
+          if (!myArticle) {
+            return Promise.reject({
+              status: 404,
+              msg: "Not Found",
+            });
+          }
+          myArticle.comment_count = commentCount;
+          return myArticle;
         });
-      }
-      return myArticle;
     });
 }
 

@@ -78,6 +78,7 @@ describe("GET /api/articles", () => {
         expect(articles).toEqual(copyOfArticles);
       });
   });
+
   test("200: None of the articles should have a body property", () => {
     return request(app)
       .get("/api/articles")
@@ -124,6 +125,7 @@ describe("GET /api/articles", () => {
         });
     });
   });
+
   describe("Filter tests", () => {
     test("200: Responds with an array of articles with the topic specified in the query", () => {
       return request(app)
@@ -202,6 +204,16 @@ describe("GET /api/articles/:article_id", () => {
       .expect(400)
       .then(({ body }) => {
         expect(body.msg).toEqual("Bad Request");
+      });
+  });
+
+  test("200: Response should have a comment_count property", () => {
+    return request(app)
+      .get("/api/articles/3")
+      .expect(200)
+      .then(({ body }) => {
+        const article = body.article;
+        expect(article.comment_count).toEqual(2);
       });
   });
 });
