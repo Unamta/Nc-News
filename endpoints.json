@@ -28,7 +28,7 @@
   },
   "GET /api/articles/:article_id": {
     "description": "serves a json representation of an article with the specified article id",
-    "queries": [],
+    "queries": ["topic"],
     "exampleResponse": {
       "article_id": 3,
       "title": "22 Amazing open source React projects",
@@ -37,7 +37,8 @@
       "body": "This is a collection of open source apps built with React.JS library. In this observation, we compared nearly 800 projects to pick the top 22. (React Native: 11, React: 11). To evaluate the quality, Mybridge AI considered a variety of factors to determine how useful the projects are for programmers. To give you an idea on the quality, the average number of Github stars from the 22 projects was 1,681.",
       "created_at": "2020-02-29 11:12:00",
       "votes": 0,
-      "article_img_url": "https://images.pexels.com/photos/11035471/pexels-photo-11035471.jpeg?w=700&h=700"
+      "article_img_url": "https://images.pexels.com/photos/11035471/pexels-photo-11035471.jpeg?w=700&h=700",
+      "comment_count": 7
     }
   },
   "GET /api/articles/:article_id/comments": {
