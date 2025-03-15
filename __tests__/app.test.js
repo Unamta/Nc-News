@@ -124,6 +124,41 @@ describe("GET /api/articles", () => {
         });
     });
   });
+  describe("Filter tests", () => {
+    test("200: Responds with an array of articles with the topic specified in the query", () => {
+      return request(app)
+        .get("/api/articles?topic=cats")
+        .expect(200)
+        .then(({ body }) => {
+          const articles = body.articles;
+          expect(articles).toHaveLength(1);
+          articles.forEach((article) => {
+            expect(article.topic).toEqual("cats");
+          });
+        });
+    });
+    test("200: Responds with an array of articles with the topic specified in the query", () => {
+      return request(app)
+        .get("/api/articles?topic=mitch")
+        .expect(200)
+        .then(({ body }) => {
+          const articles = body.articles;
+          expect(articles).toHaveLength(12);
+          articles.forEach((article) => {
+            expect(article.topic).toEqual("mitch");
+          });
+        });
+    });
+    test("200: Responds with an array of articles with the topic specified in the query", () => {
+      return request(app)
+        .get("/api/articles?topic=not_a_topic")
+        .expect(200)
+        .then(({ body }) => {
+          const articles = body.articles;
+          expect(articles).toHaveLength(0);
+        });
+    });
+  });
 });
 
 describe("GET /api/articles/:article_id", () => {

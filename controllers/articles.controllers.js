@@ -8,8 +8,9 @@ const { fetchCommentsByArticleId } = require("../models/comments.models.js");
 function getArticles(request, response, next) {
   const sortColumn = request.query.sort_by ?? "created_at";
   const sortOrder = request.query.order ?? "desc";
+  const filterTopic = request.query.topic;
 
-  fetchArticles(sortColumn, sortOrder)
+  fetchArticles(sortColumn, sortOrder, filterTopic)
     .then((articles) => {
       response.status(200).send({ articles: articles });
     })
