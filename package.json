@@ -9,7 +9,8 @@
     "test": "jest",
     "prepare": "husky install",
     "start": "node listen.js",
-    "test-seed": "jest seed.test.js"
+    "test-seed": "jest seed.test.js",
+    "seed-prod": "NODE_ENV=production npm run seed"
   },
   "repository": {
     "type": "git",
@@ -31,7 +32,7 @@
   "dependencies": {
     "dotenv": "^16.4.7",
     "express": "^4.21.2",
-    "pg": "^8.13.3",
+    "pg": "^8.14.0",
     "pg-format": "^1.0.4",
     "supertest": "^7.0.0"
   },
