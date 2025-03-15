@@ -1,13 +1,31 @@
 const db = require("../db/connection.js");
 
-function fetchArticles() {
-  return db
-    .query(
-      "SELECT article_id, title, topic, author, created_at, votes, article_img_url FROM articles ORDER BY created_at DESC;",
-    )
-    .then(({ rows }) => {
-      return rows;
+function fetchArticles(sortColumn, sortOrder) {
+  const sortGreenlist = [
+    "article_id",
+    "title",
+    "topic",
+    "author",
+    "created_at",
+    "votes",
+  ];
+  const orderGreenlist = ["asc", "desc"];
+  if (!sortGreenlist.includes(sortColumn)) {
+    return Promise.reject({
+      status: 400,
+      msg: "Bad Request",
     });
+  }
+  if (!orderGreenlist.includes(sortOrder)) {
+    return Promise.reject({
+      status: 400,
+      msg: "Bad Request",
+    });
+  }
+  const queryString = `SELECT article_id, title, topic, author, created_at, votes, article_img_url FROM articles ORDER BY ${sortColumn} ${sortOrder};`;
+  return db.query(queryString).then(({ rows }) => {
+    return rows;
+  });
 }
 
 function fetchArticleById(article_id) {

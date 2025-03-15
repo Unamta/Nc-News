@@ -89,6 +89,41 @@ describe("GET /api/articles", () => {
         });
       });
   });
+
+  describe("Sorting tests", () => {
+    test("200: Responds with an array of articles sorted by votes in descending order when passed sort_by=votes as a query", () => {
+      return request(app)
+        .get("/api/articles?sort_by=votes")
+        .expect(200)
+        .then(({ body }) => {
+          const articles = body.articles;
+          expect(articles).toBeSorted({
+            key: "votes",
+            descending: true,
+          });
+        });
+    });
+    test("200: Responds with an array of articles sorted by votes in ascending order when passed sort_by=votes and order=asc as queries", () => {
+      return request(app)
+        .get("/api/articles?sort_by=votes&order=asc")
+        .expect(200)
+        .then(({ body }) => {
+          const articles = body.articles;
+          expect(articles).toBeSorted({
+            key: "votes",
+            descending: false,
+          });
+        });
+    });
+    test("400: Responds with Bad Request when passed in a value not in the greenlist", () => {
+      return request(app)
+        .get("/api/articles?sort_by=not_a_column")
+        .expect(400)
+        .then(({ body }) => {
+          expect(body.msg).toEqual("Bad Request");
+        });
+    });
+  });
 });
 
 describe("GET /api/articles/:article_id", () => {

@@ -6,7 +6,10 @@ const {
 const { fetchCommentsByArticleId } = require("../models/comments.models.js");
 
 function getArticles(request, response, next) {
-  fetchArticles()
+  const sortColumn = request.query.sort_by ?? "created_at";
+  const sortOrder = request.query.order ?? "desc";
+
+  fetchArticles(sortColumn, sortOrder)
     .then((articles) => {
       response.status(200).send({ articles: articles });
     })
